@@ -27,19 +27,19 @@ public class HaloProperties implements Validator {
     private Path workDir;
 
     /**
-     * External URL must be a URL and it can be null.
+     * 外部URL必须是一个URL，它可以为空。
      */
     private URL externalUrl;
 
     /**
-     * Indicates if we use absolute permalink to post, page, category, tag and so on.
+     * 标识是否对帖子、页面、类别、标签等使用绝对永久链接
      */
     private boolean useAbsolutePermalink;
 
     private Set<String> initialExtensionLocations = new HashSet<>();
 
     /**
-     * This property could stop initializing required Extensions defined in classpath.
+     * 此属性可能会停止初始化类路径中定义的所需扩展。
      * See {@link run.halo.app.infra.ExtensionResourceInitializer#REQUIRED_EXTENSION_LOCATIONS}
      * for more.
      */

@@ -32,7 +32,7 @@ public record Scheme(Class<? extends Extension> type,
     }
 
     /**
-     * Builds Scheme from type with @GVK annotation.
+     * 从带有@GVK注释的类型构建Scheme
      *
      * @param type is Extension type with GVK annotation.
      * @return Scheme definition.

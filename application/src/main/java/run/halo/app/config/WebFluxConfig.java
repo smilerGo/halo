@@ -84,9 +84,9 @@ public class WebFluxConfig implements WebFluxConfigurer {
 
     @Override
     public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
-        // we need to customize the Jackson2Json[Decoder][Encoder] here to serialize and
-        // deserialize special types, e.g.: Instant, LocalDateTime. So we use ObjectMapper
-        // created by outside.
+        // 我们需要自定义Jackson2Json[Decoder][Encoder]来序列化和反序列化特殊类型，
+        // 例如:Instant, LocalDateTime。
+        // 所以我们使用外部创建的ObjectMapper。
         configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
         configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
     }
@@ -98,6 +98,15 @@ public class WebFluxConfig implements WebFluxConfigurer {
         return builder.build();
     }
 
+
+    /**
+     * 将控制台首页的请求重定向路由器生成一个Bean。
+     * 该路由器会检测请求的方法是否为GET，
+     * 路径是否匹配 "/console/**"（不包括 "/console/assets/**"），
+     * 是否TEXT_HTML媒体类型，
+     * 是否满足非 WebSocketRequestPredicate 的条件。
+     * 如果满足上述条件，则会调用 serveConsoleIndex 方法来处理该请求。
+     */
     @Bean
     RouterFunction<ServerResponse> consoleIndexRedirection() {
         var consolePredicate = method(HttpMethod.GET)
@@ -106,6 +115,7 @@ public class WebFluxConfig implements WebFluxConfigurer {
             .and(new WebSocketRequestPredicate().negate());
         return route(consolePredicate, this::serveConsoleIndex);
     }
+
 
     private Mono<ServerResponse> serveConsoleIndex(ServerRequest request) {
         var indexLocation = haloProp.getConsole().getLocation() + "index.html";
